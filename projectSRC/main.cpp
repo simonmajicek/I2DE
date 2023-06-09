@@ -6,6 +6,7 @@
 #include "examples.h"
 #include "simpleTABS.h"
 #include "houbaLevel.h"
+#include "processControl.h"
 using namespace std;
 using namespace zelpMath;
 
@@ -38,7 +39,9 @@ int main() {
 	//testingBox2D();
 	//simpleTABS();
 
-	houbaLevel();
+	//houbaLevel();
+	processControl();
+	//runProcessControl();
 
 
 	return 0;
