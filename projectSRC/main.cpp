@@ -6,7 +6,7 @@
 #include "examples.h"
 #include "simpleTABS.h"
 #include "houbaLevel.h"
-#include "processControl.h"
+#include "cerberus.h"
 using namespace std;
 using namespace zelpMath;
 
@@ -36,13 +36,12 @@ int main() {
 	//zelpWindowsOS::shutDownPC();
 	//escapiWebcamHello();
 	//unicodeTest();
-	//testingBox2D();
+	testingBox2D();
 	//simpleTABS();
 
 	//houbaLevel();
-	processControl();
 	//runProcessControl();
-
+	//runCerberus();
 
 	return 0;
 }
