@@ -12,6 +12,7 @@
 #include <valarray>
 #include <thread>
 #include <functional>
+#include <complex>
 
 //allegro
 #define ALLEGRO_UNSTABLE

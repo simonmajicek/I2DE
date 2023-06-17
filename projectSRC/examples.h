@@ -9,9 +9,12 @@
 #include "iGraphic.h"
 #include "iFont.h"
 #include "iFile.h"
+#include "iMicrophone.h"
+#include "easyButton.h"
 #include "zelpWindowsOS.h"
 #include "zelpMath.h"
 #include "zelpNotMyEscapi.h"
+#include "not_my_tinyexpr.h"
 using namespace zelpMath;
 
 void randomWalker();
@@ -26,3 +29,5 @@ void mandelbrot();
 void escapiWebcamHello();
 void unicodeTest();
 void testingBox2D();
+void testingRecording();
+void calculator();

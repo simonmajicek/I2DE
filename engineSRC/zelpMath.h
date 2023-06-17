@@ -2,7 +2,7 @@
 #include "allStaticLib.h"
 
 #define FPS 60
-#define MY_PI 3.14159265358979323846
+#define INDEX_PI 3.14159265358979323846
 
 bool operator==(const ALLEGRO_COLOR& first, ALLEGRO_COLOR& second);
 

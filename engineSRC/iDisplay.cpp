@@ -61,6 +61,13 @@ bool IDisplay::changeResolution(IPoint res) {
 	return help;
 }
 
+bool IDisplay::loadIcon(std::string path) {
+	this->icon = al_load_bitmap(path.c_str());
+	if (!icon) { debugLog("Could load bitmap : " + path);	return NULL; }
+	al_set_display_icon(this->display, this->icon);
+	return true;
+}
+
 int IDisplay::getResX() { return al_get_display_width(this->display); };
 int IDisplay::getResY() { return al_get_display_height(this->display); };
 void IDisplay::bindGetFocus(std::function<void()> func) { this->onGetFocus = func; }

@@ -703,3 +703,130 @@ void testingBox2D() {
 
 	scene.run();
 }
+
+void testingRecording() {
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 800
+	zelpWindowsOS::hideConsole();
+	EasyScene scene;
+	IDisplay display;
+	display.create();
+	display.setTitle("Microphone Recording");
+	display.changeResolution(IPoint(WINDOW_WIDTH, WINDOW_HEIGHT));
+	display.setPosition(IPoint(0, 0));
+	IMicrophone microphone;
+	microphone.init();
+
+	scene.bindUpdate([&] {
+		scene.breakLoop = !display.update();
+
+
+
+		});
+
+	scene.bindRender([&] {
+		al_clear_to_color(al_map_rgb(15, 15, 15));
+
+		microphone.update();
+		al_flip_display();
+		});
+
+	scene.run();
+
+
+}
+
+void calculator() {
+#define WINDOW_WIDTH 380
+#define WINDOW_HEIGHT 550
+	zelpWindowsOS::hideConsole();
+	EasyScene scene;
+	IDisplay display;
+	ICursor cursor;
+	display.create();
+	display.setTitle("Calculator");
+	display.changeResolution(IPoint(WINDOW_WIDTH, WINDOW_HEIGHT));
+	display.setPosition(IPoint(0, 0));
+	IFont displayText;
+	displayText.loadFont("assets/examples/arial.ttf", 55);
+	displayText.color = al_map_rgb(235, 235, 235);
+	displayText.flag = ALLEGRO_ALIGN_RIGHT;
+	displayText.loc = IPoint(WINDOW_WIDTH - 15, 50 - displayText.getSize() / 2);
+	std::string clockText = "";
+
+	std::vector<EasyButton*> vecOfButtons;
+
+	for (int y = 0; y < 4; y++) {
+		for (int x = 0; x < 4; x++) {
+			int w = (WINDOW_WIDTH / 4) - 10;
+			int h = 100;
+			int locX = 5 + (x * (w + 10));
+			int locY = 105 + (y * (h + 10));
+			EasyButton* button = new EasyButton(IPoint(locX, locY), IPoint(w, h));
+			button->setColor(al_map_rgb(20, 20, 20), al_map_rgb(30, 30, 30), al_map_rgb(90, 90, 90));
+			button->loadFont("assets/examples/arial.ttf", 40);
+			button->fontColor = al_map_rgb(235, 235, 235);
+			vecOfButtons.push_back(button);
+		}
+	}
+
+	vecOfButtons.at(0)->text = "7";
+	vecOfButtons.at(0)->bindPress([&] {clockText += "7"; cursor.setLMB(false); });
+	vecOfButtons.at(1)->text = "8";
+	vecOfButtons.at(1)->bindPress([&] {clockText += "8"; cursor.setLMB(false); });
+	vecOfButtons.at(2)->text = "9";
+	vecOfButtons.at(2)->bindPress([&] {clockText += "9"; cursor.setLMB(false); });
+	vecOfButtons.at(3)->text = "/";
+	vecOfButtons.at(3)->bindPress([&] {clockText += "/"; cursor.setLMB(false); });
+	vecOfButtons.at(4)->text = "4";
+	vecOfButtons.at(4)->bindPress([&] {clockText += "4"; cursor.setLMB(false); });
+	vecOfButtons.at(5)->text = "5";
+	vecOfButtons.at(5)->bindPress([&] {clockText += "5"; cursor.setLMB(false); });
+	vecOfButtons.at(6)->text = "6";
+	vecOfButtons.at(6)->bindPress([&] {clockText += "6"; cursor.setLMB(false); });
+	vecOfButtons.at(7)->text = "*";
+	vecOfButtons.at(7)->bindPress([&] {clockText += "*"; cursor.setLMB(false); });
+	vecOfButtons.at(8)->text = "1";
+	vecOfButtons.at(8)->bindPress([&] {clockText += "1"; cursor.setLMB(false); });
+	vecOfButtons.at(9)->text = "2";
+	vecOfButtons.at(9)->bindPress([&] {clockText += "2"; cursor.setLMB(false); });
+	vecOfButtons.at(10)->text = "3";
+	vecOfButtons.at(10)->bindPress([&] {clockText += "3"; cursor.setLMB(false); });
+	vecOfButtons.at(11)->text = "-";
+	vecOfButtons.at(11)->bindPress([&] {clockText += "-"; cursor.setLMB(false); });
+	vecOfButtons.at(12)->text = "0";
+	vecOfButtons.at(12)->bindPress([&] {clockText += "0"; cursor.setLMB(false); });
+	vecOfButtons.at(13)->text = "C";
+	vecOfButtons.at(13)->bindPress([&] {clockText = ""; cursor.setLMB(false); });
+	vecOfButtons.at(14)->text = "=";
+	vecOfButtons.at(14)->bindPress([&] {
+		clockText = std::to_string(te_interp(clockText.c_str(), 0));
+		//printf("Answer is %f\n", answer);
+		cursor.setLMB(false); });
+	vecOfButtons.at(15)->text = "+";
+	vecOfButtons.at(15)->bindPress([&] {clockText += "+"; cursor.setLMB(false); });
+
+	scene.bindInit([&] {al_clear_to_color(al_map_rgb(40, 40, 40)); });
+
+	scene.bindUpdate([&] {
+		scene.breakLoop = !display.update();
+		cursor.update();
+		for (int i = 0; i < vecOfButtons.size(); i++) {
+			vecOfButtons.at(i)->update(cursor.loc, cursor.getLMB());
+		}
+		});
+
+	scene.bindRender([&] {
+		al_clear_to_color(al_map_rgb(15, 15, 15));
+		//show calculator display
+		al_draw_filled_rounded_rectangle(5, 5, WINDOW_WIDTH - 5, 100, 5, 5, al_map_rgb(45, 45, 45));
+		displayText.render(clockText);
+		for (int i = 0; i < vecOfButtons.size(); i++) {
+			vecOfButtons.at(i)->renderWithText();
+		}
+		al_flip_display();
+		});
+
+	scene.run();
+}
+

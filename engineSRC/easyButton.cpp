@@ -3,6 +3,7 @@
 EasyButton::EasyButton(zelpMath::IPoint loc, zelpMath::IPoint res) {
 	this->loc = loc;
 	this->res = res;
+	this->fontColor = al_map_rgb(0, 0, 0);
 }
 
 void EasyButton::bindPress(std::function<void()> func) { this->pressCallback = func; }
@@ -11,6 +12,13 @@ void EasyButton::setColor(ALLEGRO_COLOR colorIdle, ALLEGRO_COLOR colorFocus, ALL
 	this->colorIdle = colorIdle;
 	this->colorFocus = colorFocus;
 	this->colorPress = colorPress;
+}
+
+bool EasyButton::loadFont(std::string path, unsigned int size) {
+	this->font = al_load_ttf_font(path.c_str(), size, 0);
+	if (!this->font) { zelpMath::debugLog("Could load font : " + path);	return NULL; }
+	this->fontSize = size;
+	return true;
 }
 
 void EasyButton::update(zelpMath::IPointF point, bool LMB) {
@@ -36,3 +44,10 @@ void EasyButton::update(zelpMath::IPointF point, bool LMB) {
 }
 
 void EasyButton::render() { al_draw_filled_rectangle(this->loc.x, this->loc.y, this->loc.x + this->res.x, this->loc.y + this->res.y, this->showColor); }
+
+void EasyButton::renderWithText() { 
+	al_draw_filled_rectangle(this->loc.x, this->loc.y, this->loc.x + this->res.x, this->loc.y + this->res.y, this->showColor); 
+	if (this->font) {
+		al_draw_text(this->font, this->fontColor, this->loc.x + (this->res.x/2), this->loc.y + (this->res.y / 2) - (this->fontSize/2), ALLEGRO_ALIGN_CENTER, text.c_str());
+	}
+}

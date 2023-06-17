@@ -34,8 +34,8 @@ namespace zelpMath {
 	}
 	float lerp(float a, float b, float t) { return a + t * (b - a); }
 	float countDistance(IPointF p1, IPointF p2) { return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2)); };
-	float degreeToRad(float number) { return (number * (MY_PI / (float)180)); };
-	float radToDegree(float number) { return (number * ((float)180) / MY_PI); };
+	float degreeToRad(float number) { return (number * (INDEX_PI / (float)180)); };
+	float radToDegree(float number) { return (number * ((float)180) / INDEX_PI); };
 	float angleBetweenTwoPointsRad(float x1, float y1, float x2, float y2) { return atan2(y1 - y2, x1 - x2); };
 	float angleBetweenTwoPointsDegree(float x1, float y1, float x2, float y2) { return radToDegree(atan2(y1 - y2, x1 - x2)); };
 	

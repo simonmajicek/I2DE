@@ -36,12 +36,14 @@ int main() {
 	//zelpWindowsOS::shutDownPC();
 	//escapiWebcamHello();
 	//unicodeTest();
-	testingBox2D();
+	//testingBox2D();
 	//simpleTABS();
 
 	//houbaLevel();
 	//runProcessControl();
 	//runCerberus();
+	//testingRecording();
+	calculator();
 
 	return 0;
 }

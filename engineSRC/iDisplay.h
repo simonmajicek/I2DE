@@ -8,6 +8,7 @@ private:
 	ALLEGRO_EVENT_QUEUE* event_queue;
 public:
 	ALLEGRO_DISPLAY* display;
+	ALLEGRO_BITMAP* icon;
 	const IPoint defaultRes = { IPoint(1920, 1080) };
 	IPoint minRes = { IPoint(40, 40) };
 	IPoint res;
@@ -22,6 +23,7 @@ public:
 	bool setFullscreen(bool fullscreen);
 	bool getFullscreen();
 	bool changeResolution(IPoint res);
+	bool loadIcon(std::string path);
 	int getResX();
 	int getResY();
 	void bindGetFocus(std::function<void()> func);
