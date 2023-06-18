@@ -844,23 +844,17 @@ void test3Dscene() {
 	display.setTitle("Scene 3D");
 	display.changeResolution(IPoint(WINDOW_WIDTH, WINDOW_HEIGHT));
 	display.setPosition(IPoint(0, 0));
-	EasyCam3D easyCam;
-
-	scene.bindInit([&] {
-
-		});
+	EasyCam3D easyCam(CONTROL_TYPE_SPACESHIP);
+	easyCam.camera->setFocusRatio((float)display.res.y / (float)display.res.y);
 
 	scene.bindUpdate([&] {
 		scene.breakLoop = !display.update();
 		easyCam.update();
-
 		});
 
 	scene.bindRender([&] {
 		al_clear_to_color(al_map_rgb(15, 15, 15));
 		textureTest();
-
-
 
 		al_flip_display();
 		});

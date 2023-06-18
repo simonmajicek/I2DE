@@ -76,7 +76,7 @@ namespace zelpMath {
 	}
 
 	//vectors3D----------------------------------------------------------------------------------
-	double vectorDotProduct(IPointF3D a, IPointF3D b) {return a.x * b.x + a.y * b.y + a.z * b.z;}
+	float vectorDotProduct(IPointF3D a, IPointF3D b) {return a.x * b.x + a.y * b.y + a.z * b.z;}
 	IPointF3D vectorCrossProduct(IPointF3D a, IPointF3D b) {
 		IPointF3D v = { a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x };
 		return v;
@@ -85,9 +85,9 @@ namespace zelpMath {
 		IPointF3D v = { a.x * s, a.y * s, a.z * s };
 		return v;
 	}
-	double vectorNorm(IPointF3D a) {return sqrt(vectorDotProduct(a, a));}
+	float vectorNorm(IPointF3D a) {return sqrt(vectorDotProduct(a, a));}
 	IPointF3D vectorNormalize(IPointF3D a) {
-		double s = vectorNorm(a);
+		float s = vectorNorm(a);
 		if (s == 0) { return a; }
 		return vectorMul(a, 1 / s);
 	}
@@ -141,6 +141,7 @@ namespace zelpMath {
 							 {3.95, 5.27, 0, 395, 527, al_map_rgb(255, 255, 255)},
 							 {1.80, 0, 0, 395, 0, al_map_rgb(255, 255, 255)} };
 		al_draw_prim(v, NULL, bitmapTexture, 0, 4, ALLEGRO_PRIM_TRIANGLE_FAN);
+		al_destroy_bitmap(bitmapTexture);
 	}
 
 	void saveBitmapToFile(ALLEGRO_BITMAP* bitmapToSave, std::string name) {

@@ -90,10 +90,10 @@ namespace zelpMath {
 	IPointF changeVectorMagnitude(IPointF vectorMag, float newMagnitude);
 	
 	//vectors3D
-	double vectorDotProduct(IPointF3D a, IPointF3D b);
+	float vectorDotProduct(IPointF3D a, IPointF3D b);
 	IPointF3D vectorCrossProduct(IPointF3D a, IPointF3D b);
 	IPointF3D vectorMul(IPointF3D a, float s);
-	double vectorNorm(IPointF3D a);	//magnitute
+	float vectorNorm(IPointF3D a);	//magnitute
 	IPointF3D vectorNormalize(IPointF3D a);
 	void vectorAdd(IPointF3D* a, IPointF3D b);
 
