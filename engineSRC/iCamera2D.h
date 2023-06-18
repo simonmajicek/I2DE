@@ -3,7 +3,7 @@
 #include "zelpMath.h"
 using namespace zelpMath;
 
-struct ICamera{
+struct ICamera2D{
 private :
 	const float zoomSpeedIn = { 1.05f };		
 	const float zoomSpeedOut = { 0.95f };
@@ -11,8 +11,8 @@ public:
 	ALLEGRO_TRANSFORM view;
 	float actualZoom;		//slouzi pro prevod World<--->Screen souradnic
 public:
-	ICamera();
-	~ICamera();
+	ICamera2D();
+	~ICamera2D();
 	void update();
 	void setLoc2D(IPointF location);
 	void move2D(IPointF move);

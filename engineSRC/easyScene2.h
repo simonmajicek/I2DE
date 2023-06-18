@@ -1,6 +1,6 @@
 #pragma once
 #include "easyScene.h"
-#include "iCamera.h"
+#include "iCamera2D.h"
 #include "iDisplay.h"
 #include "iCursor.h"
 #include "iKeyboard.h"

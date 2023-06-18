@@ -75,6 +75,28 @@ namespace zelpMath {
 		return vectorMag;
 	}
 
+	//vectors3D----------------------------------------------------------------------------------
+	double vectorDotProduct(IPointF3D a, IPointF3D b) {return a.x * b.x + a.y * b.y + a.z * b.z;}
+	IPointF3D vectorCrossProduct(IPointF3D a, IPointF3D b) {
+		IPointF3D v = { a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x };
+		return v;
+	}
+	IPointF3D vectorMul(IPointF3D a, float s) {
+		IPointF3D v = { a.x * s, a.y * s, a.z * s };
+		return v;
+	}
+	double vectorNorm(IPointF3D a) {return sqrt(vectorDotProduct(a, a));}
+	IPointF3D vectorNormalize(IPointF3D a) {
+		double s = vectorNorm(a);
+		if (s == 0) { return a; }
+		return vectorMul(a, 1 / s);
+	}
+	void vectorAdd(IPointF3D* a, IPointF3D b) {
+		a->x += b.x;
+		a->y += b.y;
+		a->z += b.z;
+	}
+
 	//specific math------------------------------------------------------------------------------
 	float randomFloat(float lowNumber, float hightNumber) { return lowNumber + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (hightNumber - lowNumber))); };
 	float mapRange(float value, float minCurrentRange, float maxCurrentRange, float minTargetRange, float maxTargetRange) { return ((value - minCurrentRange) / (maxCurrentRange - minCurrentRange)) * (maxTargetRange - minTargetRange) + minTargetRange; };
@@ -115,9 +137,9 @@ namespace zelpMath {
 	void textureTest() {
 		ALLEGRO_BITMAP* bitmapTexture = al_load_bitmap("assets/examples/bird.png");
 		ALLEGRO_VERTEX v[] = {{0, 0, 0, 0, 0, al_map_rgb(255, 255, 255)},
-							 {0, 527, 0, 0, 527, al_map_rgb(255, 255, 255)},
-							 {395, 527, 0, 395, 527, al_map_rgb(255, 255, 255)},
-							 {180, 0, 0, 395, 0, al_map_rgb(255, 255, 255)} };
+							 {0, 5.27, 0, 0, 527, al_map_rgb(255, 255, 255)},
+							 {3.95, 5.27, 0, 395, 527, al_map_rgb(255, 255, 255)},
+							 {1.80, 0, 0, 395, 0, al_map_rgb(255, 255, 255)} };
 		al_draw_prim(v, NULL, bitmapTexture, 0, 4, ALLEGRO_PRIM_TRIANGLE_FAN);
 	}
 

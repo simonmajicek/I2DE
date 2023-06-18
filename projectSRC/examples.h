@@ -4,6 +4,7 @@
 #include "easyScene2.h"
 #include "iDisplay.h"
 #include "easyCam2D.h"
+#include "easyCam3D.h"
 #include "iKeyboard.h"
 #include "iCursor.h"
 #include "iGraphic.h"
@@ -31,3 +32,4 @@ void unicodeTest();
 void testingBox2D();
 void testingRecording();
 void calculator();
+void test3Dscene();

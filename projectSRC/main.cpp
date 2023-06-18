@@ -43,8 +43,8 @@ int main() {
 	//runProcessControl();
 	//runCerberus();
 	//testingRecording();
-	calculator();
+	//calculator();
+	test3Dscene();
 
 	return 0;
 }
-

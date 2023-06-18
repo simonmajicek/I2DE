@@ -3,7 +3,7 @@
 EasyCam2D::EasyCam2D() {
 	this->cursor = new ICursor();
 	this->keyboard = new IKeyboard();
-	this->camera = new ICamera();
+	this->camera = new ICamera2D();
 }
 
 EasyCam2D::~EasyCam2D() {

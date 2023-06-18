@@ -41,6 +41,29 @@ namespace zelpMath {
 		void infoToConsole() { std::cout << "[" << x << "][" << y << "]" << std::endl; }
 	};
 
+	struct IPointF3D {
+		float x;
+		float y;
+		float z;
+		IPointF3D(float x = 0, float y = 0, float z = 0) : x(x), y(y), z(z) {}
+		IPointF3D& operator=(const IPointF3D& a) {
+			x = a.x;
+			y = a.y;
+			z = a.z;
+			return *this;
+		}
+		IPointF3D operator+(const IPointF3D& a) const {
+			return IPointF3D(a.x + x, a.y + y, a.z + z);
+		}
+		IPointF3D operator-(const IPointF3D& a) const {
+			return IPointF3D(a.x - x, a.y - y, a.z - z);
+		}
+		bool operator==(const IPointF3D& a) const {
+			return (x == a.x && y == a.y && z == a.z);
+		}
+		void infoToConsole() { std::cout << "[" << x << "][" << y << "]" << "][" << z << "]" << std::endl; }
+	};
+
 	struct IBezier2D {
 		IPointF points[4];
 		void render(ALLEGRO_COLOR color, float thickness) { al_draw_spline((float*)points, color, thickness); };
@@ -65,6 +88,14 @@ namespace zelpMath {
 	float vectorMagnitude(IPointF sizeFromThisVector);
 	IPointF getNormalizeVector(IPointF vector);
 	IPointF changeVectorMagnitude(IPointF vectorMag, float newMagnitude);
+	
+	//vectors3D
+	double vectorDotProduct(IPointF3D a, IPointF3D b);
+	IPointF3D vectorCrossProduct(IPointF3D a, IPointF3D b);
+	IPointF3D vectorMul(IPointF3D a, float s);
+	double vectorNorm(IPointF3D a);	//magnitute
+	IPointF3D vectorNormalize(IPointF3D a);
+	void vectorAdd(IPointF3D* a, IPointF3D b);
 
 	//specific math
 	float randomFloat(float lowNumber, float hightNumber);
