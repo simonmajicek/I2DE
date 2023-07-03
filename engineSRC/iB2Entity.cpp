@@ -11,7 +11,7 @@ IB2Entity::IB2Entity(b2World* b2world, IPointF originLoc, b2BodyType type){
 	
 	this->bodyDef = new b2BodyDef();
 	this->bodyDef->type = type;
-	this->bodyDef->position.Set(originLoc.x, -originLoc.y);
+	this->bodyDef->position.Set(originLoc.x, originLoc.y);
 	//this->bodyDef->allowSleep = true;
 	this->body = b2world->CreateBody(this->bodyDef);
 	this->setCollisionBehavior(CLASS_ENTITY, ENTITY_COLLISSON, COLLISSON_WITH_ENTITY);
@@ -153,14 +153,13 @@ void IB2Entity::setLocationOrigin(float originX, float originY, float angleRad){
 }
 
 bool IB2Entity::isPointInsideBox2D(IPointF point){
-	b2Vec2 tmpPoint = b2Vec2(point.x, -point.y);
+	IPointF tmp = this->cursorOriginToBox2D(point);
 	for (b2Fixture* f = this->body->GetFixtureList(); f; f = f->GetNext()){
-		if (f->TestPoint(tmpPoint)){return true;}
+		if (f->TestPoint(b2Vec2(tmp.x, tmp.y))){return true;}
 	}
 	return false;
 }
 
-void IB2Entity::setLinearVelocity(b2Vec2 vel){this->body->SetLinearVelocity(vel);}
 
 void IB2Entity::setDensity(float density){
 	for (b2Fixture* f = this->body->GetFixtureList(); f; f = f->GetNext()){
@@ -240,20 +239,27 @@ void IB2Entity::bindPreSolve(std::function<void()> func) {this->onPreSolveCallba
 void IB2Entity::bindPostSolve(std::function<void()> func) {this->onPostSolveCallback = func;}
 
 //FASADA + Bonus funkce --------------------------------------------------------------------------------------
-IPointF IB2Entity::cursorOriginToBox2D(IPointF cursorOrigin) {return IPointF(cursorOrigin.x / IB2Entity::box2Dratio, cursorOrigin.y / IB2Entity::box2Dratio);}
+IPointF IB2Entity::cursorOriginToBox2D(IPointF cursorOrigin) {return IPointF(cursorOrigin.x / IB2Entity::box2Dratio, -cursorOrigin.y / IB2Entity::box2Dratio);}
+
+void IB2Entity::infoToConsole() {
+	debugLog("DO IT LATER");
+}
+
 void IB2Entity::debugFly(IPointF originPoint) {
+	//z neznameho duvodu musim matematicky prohodit osu X a Y, aby tahle metoda spravne fungovala
+	IPointF originPoint2 = this->cursorOriginToBox2D(originPoint);
 	b2Vec2 tmp;
 	b2Vec2 target;
-	target.x = originPoint.x;
-	target.y = originPoint.y;
+	target.x = originPoint2.x;
+	target.y = -originPoint2.y;
 	b2Vec2 vel;// = target - tmp;
 	tmp.x = this->getOriginLoc().x;
 	tmp.y = this->getOriginLoc().y;
-	vel.x = target.x - tmp.x;
+	vel.x = -(target.x - tmp.x);
 	vel.y = target.y - tmp.y;
 
-	vel *= 1.0f;
-	this->setLinearVelocity(vel);
+	vel *= -5.0f;		
+	this->body->SetLinearVelocity(vel);
 
 }
 

@@ -72,7 +72,6 @@ public:
 	void setLocationOrigin(float originX, float originY);
 	void setLocationOrigin(float originX, float originY, float angleRad);	//teleport
 	bool isPointInsideBox2D(IPointF point);
-	void setLinearVelocity(b2Vec2 vel);
 	void setDensity(float density);
 	void renderDebugBox2D();
 	void bindStart(std::function<void()> func);
@@ -81,7 +80,8 @@ public:
 	void bindPostSolve(std::function<void()> func);
 
 	//fasada + bonus
-	static IPointF cursorOriginToBox2D(IPointF cursorOrigin);
+	static IPointF cursorOriginToBox2D(IPointF cursorOrigin);	//nemazat + vymyslet lepsi jmeno : prevadi allegro Origin do box2d Origin (box2d ratio) + osa y se prevracena
+	void infoToConsole();
 	void debugFly(IPointF originPoint);		//cursorJoint je lepsi, ale tohle se hodi vice pro debug
 };
 

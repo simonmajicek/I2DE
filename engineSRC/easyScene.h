@@ -2,6 +2,7 @@
 #include "zelpMath.h"
 #include "iB2Entity.h"
 #include "iB2ContactListener.h"
+#include "iB2Joint.h"
 #include "iFpsCounter.h"
 using namespace zelpMath;
 

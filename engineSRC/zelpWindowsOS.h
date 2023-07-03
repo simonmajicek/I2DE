@@ -9,7 +9,7 @@ namespace zelpWindowsOS {
 		std::time_t systemTime;
 		std::tm* now;
 	public:
-		void update() { this->systemTime = std::time(0); this->now = std::localtime(&systemTime); };
+		void update() { this->systemTime = std::time(0); localtime_s(this->now, &systemTime); };
 		int getSecond() { return this->now->tm_sec; };
 		int getMinute() { return this->now->tm_min; };
 		int getHour() { return this->now->tm_hour; };

@@ -1,5 +1,7 @@
 #include "iB2Joint.h"
 
+#ifdef BOX2D_ENGINE_ON
+
 unsigned int IB2Joint::idCount = 0;
 
 IB2Joint::IB2Joint(b2World* b2world) {
@@ -63,25 +65,56 @@ void IB2Joint::createWeldJoint(b2Body* bodyObjectA, b2Body* bodyObjectB, b2Vec2 
 	IB2Joint::idCount++;
 }
 
+//-----------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
 
-void IB2Joint::grabObject(b2World* b2world, b2Body* bodyObject, IPointF originPoint) {
+IB2MouseJoint::IB2MouseJoint(b2World* b2world, IPointF* cursorOriginPoint) {
+	this->b2world = b2world;
+	this->cursorOriginPoint = cursorOriginPoint;
+	this->cursorOriginToBox2DOrigin = IB2Entity::cursorOriginToBox2D(*this->cursorOriginPoint);
+
 	//create body cursor
-	//create mouseJoint
-
 	b2BodyDef* bodyDef = new b2BodyDef();
 	bodyDef->type = b2_dynamicBody;
-	bodyDef->position.Set(originPoint.x, originPoint.y);
+	bodyDef->position.Set(this->cursorOriginToBox2DOrigin.x, this->cursorOriginToBox2DOrigin.y);
 	//this->bodyDef->linearDamping = 0;
 
-	this->body = b2world->CreateBody(bodyDef);
-	this->body->SetUserData(this);
+	this->mouseBody = b2world->CreateBody(bodyDef);
+	this->mouseBody->SetUserData(this);
+
+}
+
+IB2MouseJoint::~IB2MouseJoint() {
+	if (this->mJoint) {
+		b2world->DestroyJoint(this->mJoint);
+		this->mJoint = NULL;
+	}
+	if (this->mouseBody) {
+		b2world->DestroyBody(this->mouseBody);
+		this->mouseBody = NULL;
+	}
+}
+
+void IB2MouseJoint::update() {
+	this->cursorOriginToBox2DOrigin = IB2Entity::cursorOriginToBox2D(*this->cursorOriginPoint);
+	//this->cursorOriginToBox2DOrigin.infoToConsole();
+
+	if (this->mouseBody && this->mJoint) {
+		this->mouseBody->SetTransform(b2Vec2(this->cursorOriginToBox2DOrigin.x, this->cursorOriginToBox2DOrigin.y), this->mouseBody->GetAngle());
+		this->mJoint->SetTarget(b2Vec2(this->cursorOriginToBox2DOrigin.x, this->cursorOriginToBox2DOrigin.y));
+	}
+}
+
+void IB2MouseJoint::grabObject(b2Body* bodyObject) {
+	//create mouseJoint
 
 
 	b2MouseJointDef* jointMouseDef = new b2MouseJointDef();
-	jointMouseDef->bodyA = this->body;
+	jointMouseDef->bodyA = this->mouseBody;
 	jointMouseDef->bodyB = bodyObject;
 	jointMouseDef->maxForce = 1000 * bodyObject->GetMass();
-	jointMouseDef->target = b2Vec2(originPoint.x, originPoint.y);
+	jointMouseDef->target = b2Vec2(this->cursorOriginToBox2DOrigin.x, this->cursorOriginToBox2DOrigin.y);
 	//jointMouseDef->target = bodyObject->GetPosition();
 	jointMouseDef->collideConnected = false;
 	//jointMouseDef->frequencyHz = 0.0f;
@@ -92,12 +125,14 @@ void IB2Joint::grabObject(b2World* b2world, b2Body* bodyObject, IPointF originPo
 	//create the joint
 	this->mJoint = (b2MouseJoint*)b2world->CreateJoint(jointMouseDef);
 	//this->mj->
-	this->mJoint->SetTarget(b2Vec2(originPoint.x, originPoint.y));
+	this->mJoint->SetTarget(b2Vec2(this->cursorOriginToBox2DOrigin.x, this->cursorOriginToBox2DOrigin.y));
 
-
+	if (this->mJoint) {
+		debugLog("mJoint created");
+	}
 }
 
-bool IB2Joint::tryGrabObject(b2World* b2world, b2Body* bodyObject, IPointF originPoint) {
+bool IB2MouseJoint::tryGrabObject(b2Body* bodyObject) {
 	/*
 
 			if(this->vecOfB2Dynamic->at(i)->isPointInside(this->GV->cursor->getSelectedLoc()) && this->GV->cursor->getCanInteractive()){
@@ -109,29 +144,24 @@ bool IB2Joint::tryGrabObject(b2World* b2world, b2Body* bodyObject, IPointF origi
 
 	bool isInside = false;
 	for (b2Fixture* f = bodyObject->GetFixtureList(); f; f = f->GetNext()) {
-		if (f->TestPoint(b2Vec2(originPoint.x, originPoint.y))) {
+		if (f->TestPoint(b2Vec2(this->cursorOriginToBox2DOrigin.x, this->cursorOriginToBox2DOrigin.y))) {
 			isInside = true;
 			break;
 		}
 	}
 	if (isInside) {
-		this->grabObject(b2world, bodyObject, originPoint);
+		this->grabObject(bodyObject);
 		return true;
 	}
 
 	return false;
 }
 
-void IB2Joint::releaseObject(b2World* b2world) {
-	if (this->mJoint != NULL) {
+void IB2MouseJoint::releaseObject() {
+	if (this->mJoint) {
 		b2world->DestroyJoint(this->mJoint);
 		this->mJoint = NULL;
 	}
-	if (this->body != NULL) {
-		b2world->DestroyBody(this->body);
-		this->body = NULL;
-	}
 }
 
-
-
+#endif
