@@ -135,7 +135,12 @@ uint16 IB2Entity::getMaskBits(){return this->maskBits;}
 
 IPointF IB2Entity::getOriginLoc(){
 	//y osa je otocena
-	return IPointF(this->body->GetPosition().x, -this->body->GetPosition().y);
+	return IPointF(this->body->GetPosition().x, this->body->GetPosition().y);
+}
+
+IPointF IB2Entity::getScreenLoc() {
+	//y osa je otocena
+	return IPointF(this->body->GetPosition().x * this->box2Dratio, -this->body->GetPosition().y * this->box2Dratio);
 }
 
 void IB2Entity::setAngleRad(float angleRad){this->body->SetTransform( body->GetPosition(), angleRad );}
@@ -153,13 +158,20 @@ void IB2Entity::setLocationOrigin(float originX, float originY, float angleRad){
 }
 
 bool IB2Entity::isPointInsideBox2D(IPointF point){
-	IPointF tmp = this->cursorOriginToBox2D(point);
+	IPointF tmp = this->screenOriginToBox2D(point);
 	for (b2Fixture* f = this->body->GetFixtureList(); f; f = f->GetNext()){
 		if (f->TestPoint(b2Vec2(tmp.x, tmp.y))){return true;}
 	}
 	return false;
 }
 
+bool IB2Entity::isB2PointInsideBox2D(IPointF point) {
+	IPointF tmp = point;
+	for (b2Fixture* f = this->body->GetFixtureList(); f; f = f->GetNext()) {
+		if (f->TestPoint(b2Vec2(tmp.x, tmp.y))) { return true; }
+	}
+	return false;
+}
 
 void IB2Entity::setDensity(float density){
 	for (b2Fixture* f = this->body->GetFixtureList(); f; f = f->GetNext()){
@@ -173,7 +185,7 @@ void IB2Entity::renderDebugBox2D(){
 	IPointF tmpOrigin2;
 	float angle = -body->GetAngle();
 	
-	ALLEGRO_COLOR color = al_map_rgb(0, 255, 0);
+	ALLEGRO_COLOR color = al_map_rgba(0, 255, 0, 40);
 	
 	b2Vec2 tmpPosCenter = this->body->GetPosition();
 	for (b2Fixture* f = this->body->GetFixtureList(); f; f = f->GetNext()){
@@ -203,7 +215,7 @@ void IB2Entity::renderDebugBox2D(){
 			}
 		}
 		if(shape->GetType() == 0 ){
-			al_draw_circle(this->getOriginLoc().x * IB2Entity::box2Dratio, this->getOriginLoc().y * IB2Entity::box2Dratio, shape->m_radius * IB2Entity::box2Dratio, color, 1.0f);
+			al_draw_circle(this->getOriginLoc().x * IB2Entity::box2Dratio, -this->getOriginLoc().y * IB2Entity::box2Dratio, shape->m_radius * IB2Entity::box2Dratio, color, 1.0f);
 		}
 		if (shape->GetType() == 3) {
 			for (int i = 0; i < ((b2ChainShape*)shape)->GetChildCount(); i++) {
@@ -239,7 +251,7 @@ void IB2Entity::bindPreSolve(std::function<void()> func) {this->onPreSolveCallba
 void IB2Entity::bindPostSolve(std::function<void()> func) {this->onPostSolveCallback = func;}
 
 //FASADA + Bonus funkce --------------------------------------------------------------------------------------
-IPointF IB2Entity::cursorOriginToBox2D(IPointF cursorOrigin) {return IPointF(cursorOrigin.x / IB2Entity::box2Dratio, -cursorOrigin.y / IB2Entity::box2Dratio);}
+IPointF IB2Entity::screenOriginToBox2D(IPointF cursorOrigin) {return IPointF(cursorOrigin.x / IB2Entity::box2Dratio, -cursorOrigin.y / IB2Entity::box2Dratio);}
 
 void IB2Entity::infoToConsole() {
 	debugLog("DO IT LATER");
@@ -247,18 +259,18 @@ void IB2Entity::infoToConsole() {
 
 void IB2Entity::debugFly(IPointF originPoint) {
 	//z neznameho duvodu musim matematicky prohodit osu X a Y, aby tahle metoda spravne fungovala
-	IPointF originPoint2 = this->cursorOriginToBox2D(originPoint);
+	IPointF originPoint2 = this->screenOriginToBox2D(originPoint);
 	b2Vec2 tmp;
 	b2Vec2 target;
 	target.x = originPoint2.x;
-	target.y = -originPoint2.y;
+	target.y = originPoint2.y;
 	b2Vec2 vel;// = target - tmp;
 	tmp.x = this->getOriginLoc().x;
 	tmp.y = this->getOriginLoc().y;
-	vel.x = -(target.x - tmp.x);
+	vel.x = (target.x - tmp.x);
 	vel.y = target.y - tmp.y;
 
-	vel *= -5.0f;		
+	vel *= 5.0f;		
 	this->body->SetLinearVelocity(vel);
 
 }

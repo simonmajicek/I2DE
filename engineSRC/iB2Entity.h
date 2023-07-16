@@ -11,22 +11,25 @@ enum{
 	CLASS_GHOST = -1,		//no interaction...
 	CLASS_ENTITY = 1,
 	CLASS_STATIC,
-	CLASS_DYNAMIC
+	CLASS_DYNAMIC,
+	CLASS_NPC
 };
 
 //categoryBits (1, 2, 4, 8, ...)
 enum{
 	STATIC_COLLISSON = 1,
 	DYNAMIC_COLLISSON = 2,
-	//NEXT_COLLISSON_TYPE = 4
+	NPC_COLLISSON = 4,
+	//NEXT_COLLISSON_TYPE = 8
 	ENTITY_COLLISSON = 65535	// 65535 je max cuint number
 };
 
 //maskBits
 enum{
 	COLLISSON_WITH_ENTITY = 65535,  //65535 max number of uint16
-	COLLISSON_WITH_STATIC = DYNAMIC_COLLISSON,
-	COLLISSON_WITH_DYNAMIC = DYNAMIC_COLLISSON | STATIC_COLLISSON
+	COLLISSON_WITH_STATIC = DYNAMIC_COLLISSON | NPC_COLLISSON,
+	COLLISSON_WITH_DYNAMIC = DYNAMIC_COLLISSON | STATIC_COLLISSON,
+	COLLISSON_WITH_NPC = STATIC_COLLISSON
 };
 
 struct IB2Entity{
@@ -67,11 +70,13 @@ public:
 	uint16 getCategoryBits();
 	uint16 getMaskBits();
 	IPointF getOriginLoc();
+	IPointF getScreenLoc();	//upravena o box2Dratio
 	void setAngleRad(float angleRad);	
 	float getAngleRad();
 	void setLocationOrigin(float originX, float originY);
 	void setLocationOrigin(float originX, float originY, float angleRad);	//teleport
 	bool isPointInsideBox2D(IPointF point);
+	bool isB2PointInsideBox2D(IPointF point);
 	void setDensity(float density);
 	void renderDebugBox2D();
 	void bindStart(std::function<void()> func);
@@ -80,7 +85,7 @@ public:
 	void bindPostSolve(std::function<void()> func);
 
 	//fasada + bonus
-	static IPointF cursorOriginToBox2D(IPointF cursorOrigin);	//nemazat + vymyslet lepsi jmeno : prevadi allegro Origin do box2d Origin (box2d ratio) + osa y se prevracena
+	static IPointF screenOriginToBox2D(IPointF cursorOrigin);	//nemazat + vymyslet lepsi jmeno : prevadi allegro Origin do box2d Origin (box2d ratio) + osa y se prevracena
 	void infoToConsole();
 	void debugFly(IPointF originPoint);		//cursorJoint je lepsi, ale tohle se hodi vice pro debug
 };

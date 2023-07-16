@@ -1,3 +1,4 @@
+
 #include <iostream>
 
 #include "allStaticLib.h" 
@@ -44,7 +45,12 @@ int main() {
 	//runCerberus();
 	//testingRecording();
 	//calculator();
-	test3Dscene();
+	//test3Dscene();
+	
+	//rate, bet min, want win, alreadyLost
+	//vypocita, kolik musim vsadit, abych byl zpatky v plusu
+	//bruteForceBet();
+
 
 	return 0;
 }

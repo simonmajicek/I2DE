@@ -1,6 +1,27 @@
 #include "iCamera3D.h"
 
 ICamera3D::ICamera3D(float focusRatio) {
+	//We save Allegro's projection so we can restore it for drawing text.
+	//tohle jsou defaultni hodnoty pro projection matici pro 3D
+	//pouzit this->defaultProjection = *al_get_current_projection_transform(); v konstruktoru neni bezpecne
+	this->defaultProjection.m[0][0] = 0.00333333;
+	this->defaultProjection.m[0][1] = 0;
+	this->defaultProjection.m[0][2] = 0;
+	this->defaultProjection.m[0][3] = 0;
+	this->defaultProjection.m[1][0] = 0;
+	this->defaultProjection.m[1][1] = -0.0033333;
+	this->defaultProjection.m[1][2] = 0;
+	this->defaultProjection.m[1][3] = 0;
+	this->defaultProjection.m[2][0] = 0;
+	this->defaultProjection.m[2][1] = 0;
+	this->defaultProjection.m[2][2] = 1;
+	this->defaultProjection.m[2][3] = 0;
+	this->defaultProjection.m[3][0] = -1;
+	this->defaultProjection.m[3][1] = 1;
+	this->defaultProjection.m[3][2] = 0;
+	this->defaultProjection.m[3][3] = 1;
+
+	//--------------------------------------------------------------------------------
 	this->focusRatio = focusRatio;
 	this->fieldOfView = zelpMath::radToDegree(60);
 
@@ -9,18 +30,14 @@ ICamera3D::ICamera3D(float focusRatio) {
 	this->zaxis.z = 1;
 	this->position.y = 2;
 
-	al_identity_transform(&this->projection);
-	al_translate_transform_3d(&this->projection, 0, 0, -1);
-	this->focus = tan(this->fieldOfView / 2);
-	al_perspective_transform(&this->projection, -this->focusRatio * this->focus, this->focus, 1, this->focus * this->focusRatio, -this->focus, 1000.0f);
-	al_use_projection_transform(&this->projection);
+	this->useProjection();
 }
 ICamera3D::~ICamera3D() {}
 
 void ICamera3D::update() {
-	this->projectionBackup = *al_get_current_projection_transform();
+	//this->projectionBackup = *al_get_current_projection_transform();
 
-	this->reset();		//nechat, diky tomu jde focus
+	this->useProjection();		//nechat, diky tomu jde focus
 
 	al_set_render_state(ALLEGRO_DEPTH_TEST, 1);
 	al_clear_depth_buffer(1);
@@ -89,7 +106,7 @@ double ICamera3D::getRoll() {
 
 void ICamera3D::setFocusRatio(float focusRatio) {this->focusRatio = focusRatio;}
 
-void ICamera3D::reset() {
+void ICamera3D::useProjection() {
 	al_identity_transform(&this->projection);
 	al_translate_transform_3d(&this->projection, 0, 0, -1);
 	this->focus = tan(this->fieldOfView / 2);
@@ -97,9 +114,10 @@ void ICamera3D::reset() {
 	al_use_projection_transform(&this->projection);
 }
 
-void ICamera3D::restore() {
+void ICamera3D::defaultCamera() {
 	al_identity_transform(&this->projection);
 	al_use_transform(&this->projection);
-	al_use_projection_transform(&this->projectionBackup);
+	al_use_projection_transform(&this->defaultProjection);
 	al_set_render_state(ALLEGRO_DEPTH_TEST, 0);
+
 }

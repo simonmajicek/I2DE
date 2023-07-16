@@ -1,6 +1,7 @@
 #include "iCamera2D.h"
 
 ICamera2D::ICamera2D(){
+	al_identity_transform(&this->defaultView);
 	al_identity_transform(&this->view);
 }
 ICamera2D::~ICamera2D(){}
@@ -79,3 +80,6 @@ IPointF ICamera2D::ScreenToWorldPointRatio(IPointF nScreen){
 	return tmp;
 }
 
+void ICamera2D::defaultCamera() {
+	al_use_transform(&this->defaultView);
+}

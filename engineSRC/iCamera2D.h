@@ -9,6 +9,7 @@ private :
 	const float zoomSpeedOut = { 0.95f };
 public:
 	ALLEGRO_TRANSFORM view;
+	ALLEGRO_TRANSFORM defaultView;
 	float actualZoom;		//slouzi pro prevod World<--->Screen souradnic
 public:
 	ICamera2D();
@@ -27,6 +28,7 @@ public:
 	IPointF ScreenToWorld(IPointF nScreen);	
 	IPointF WorldToScreenPointRatio(IPointF fWorld);	//pro prevod meritka, camera ma souradnici 00
 	IPointF ScreenToWorldPointRatio(IPointF nScreen);	//pro prevod meritka, camera ma souradnici 00
+	void defaultCamera();	//pro zobrazeni textu atd...
 };
 
 

@@ -72,7 +72,7 @@ void IB2Joint::createWeldJoint(b2Body* bodyObjectA, b2Body* bodyObjectB, b2Vec2 
 IB2MouseJoint::IB2MouseJoint(b2World* b2world, IPointF* cursorOriginPoint) {
 	this->b2world = b2world;
 	this->cursorOriginPoint = cursorOriginPoint;
-	this->cursorOriginToBox2DOrigin = IB2Entity::cursorOriginToBox2D(*this->cursorOriginPoint);
+	this->cursorOriginToBox2DOrigin = IB2Entity::screenOriginToBox2D(*this->cursorOriginPoint);
 
 	//create body cursor
 	b2BodyDef* bodyDef = new b2BodyDef();
@@ -97,7 +97,7 @@ IB2MouseJoint::~IB2MouseJoint() {
 }
 
 void IB2MouseJoint::update() {
-	this->cursorOriginToBox2DOrigin = IB2Entity::cursorOriginToBox2D(*this->cursorOriginPoint);
+	this->cursorOriginToBox2DOrigin = IB2Entity::screenOriginToBox2D(*this->cursorOriginPoint);
 	//this->cursorOriginToBox2DOrigin.infoToConsole();
 
 	if (this->mouseBody && this->mJoint) {

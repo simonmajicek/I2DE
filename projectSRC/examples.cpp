@@ -675,7 +675,7 @@ void testingBox2D() {
 
 	scene.bindUpdate([&] {
 		if (scene.cursor->getLMB()) {
-			IPointF spawnLoc = IB2Entity::cursorOriginToBox2D(scene.cursor->originLoc);
+			IPointF spawnLoc = IB2Entity::screenOriginToBox2D(scene.cursor->originLoc);
 			IB2Entity* box = new IB2Entity(scene.b2world, spawnLoc, b2_dynamicBody);
 			box->addBoxShape(0.05f, 0.05f, 1, 0.95, 0.95, 0.05f, 0);
 			box->addCircleShape(0.05f, 1, 0.95, 0.95);
@@ -838,6 +838,7 @@ void test3Dscene() {
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 600
 	zelpWindowsOS::hideConsole();
+	//zelpWindowsOS::showConsole();
 	EasyScene scene;
 	IDisplay display;
 	display.create();
@@ -855,9 +856,16 @@ void test3Dscene() {
 	scene.bindRender([&] {
 		al_clear_to_color(al_map_rgb(15, 15, 15));
 		textureTest();
+		
+		easyCam.camera->defaultCamera();
+		
+		al_draw_filled_rectangle(10, 10, 80, 80, al_map_rgb(180, 60, 180));
 
 		al_flip_display();
 		});
 
 	scene.run();
 }
+
+
+

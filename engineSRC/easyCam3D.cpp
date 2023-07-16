@@ -20,7 +20,6 @@ EasyCam3D::~EasyCam3D() {
 
 void EasyCam3D::update() {
 	this->keyboard->update();
-	this->camera->update();
 	this->cursor->update();
 
 	this->dir = IPointF(0.0f, 0.0f);
@@ -52,7 +51,6 @@ void EasyCam3D::update() {
 	}
 
 	this->camera->update();
-	//if (this->keyboard->getKeyState(KEY_R) == KEY_HOLD) { this->camera->restore(); }
 }
 
 

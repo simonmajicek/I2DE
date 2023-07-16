@@ -5,6 +5,7 @@ enum {
 	KEY_FREE = 1,				
 	KEY_PRESS = 2,
 	KEY_HOLD = 4,
+	KEY_UNPRESS = 6,
 	KEY_NOT_FREE = 6			//2 = 01, 4 = 001, 6 = 011 (neni KEY_FREE)
 };
 
