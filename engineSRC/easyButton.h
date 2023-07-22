@@ -15,6 +15,7 @@ struct EasyButton {
 	std::string text;
 	std::function<void()> pressCallback = { NULL };
 	EasyButton(zelpMath::IPoint loc, zelpMath::IPoint res);
+	~EasyButton();
 	void bindPress(std::function<void()> func);
 	void setColor(ALLEGRO_COLOR colorIdle, ALLEGRO_COLOR colorFocus, ALLEGRO_COLOR colorPress);
 	bool loadFont(std::string path, unsigned int size = 32);

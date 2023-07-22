@@ -16,8 +16,9 @@ public:
 	IDisplay* display;
 	ICursor* cursor;
 	IKeyboard* keyboard;
+	bool multipleScene;		
 public:		
-	EasyScene2();
+	EasyScene2(bool multipleScene = false);	//pukud dam true, musim manualne init a delete IDisplay, ICursor a Keyboard v SceneManager
 	~EasyScene2();
 	void preUpdate();
 	void update();				//vraci cislo sceny
@@ -26,6 +27,5 @@ public:
 	void render();
 	void postRender();
 };
-
 
 

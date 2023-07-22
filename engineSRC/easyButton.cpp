@@ -6,6 +6,12 @@ EasyButton::EasyButton(zelpMath::IPoint loc, zelpMath::IPoint res) {
 	this->fontColor = al_map_rgb(0, 0, 0);
 }
 
+EasyButton::~EasyButton() {
+	if (this->font) {
+		al_destroy_font(font);
+	}
+}
+
 void EasyButton::bindPress(std::function<void()> func) { this->pressCallback = func; }
 
 void EasyButton::setColor(ALLEGRO_COLOR colorIdle, ALLEGRO_COLOR colorFocus, ALLEGRO_COLOR colorPress) {

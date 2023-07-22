@@ -23,6 +23,8 @@ IKeyboard::~IKeyboard() {
 	this->isKeyPress = NULL;
 	this->keyTimer = NULL;
 	this->keyChar = NULL;
+
+	al_destroy_event_queue(this->event_queue);
 }
 
 void IKeyboard::update() {

@@ -20,9 +20,18 @@ IB2Entity::IB2Entity(b2World* b2world, IPointF originLoc, b2BodyType type){
 
 IB2Entity::~IB2Entity(){
 	if(this->body != NULL){
-  		b2world->DestroyBody(this->body);
+  		//b2world->DestroyBody(this->body);
+		this->body->GetWorld()->DestroyBody(this->body);
   		this->body = NULL;
 	}
+}
+
+bool IB2Entity::haveJoint() {
+	b2JointEdge* jl = this->body->GetJointList();
+	if (jl) {
+		return true;
+	}
+	return false;
 }
 
 void IB2Entity::setCollisionBehavior(int classType, uint16 categoryBits, uint16 maskBits){
@@ -211,11 +220,12 @@ void IB2Entity::renderDebugBox2D(){
 				tmpOrigin2.x = (p2.x + p.x) * IB2Entity::box2Dratio;
 				tmpOrigin2.y = (-p2.y - p.y) * IB2Entity::box2Dratio;
 				
-				al_draw_line(tmpOrigin1.x, tmpOrigin1.y, tmpOrigin2.x, tmpOrigin2.y, color, 1.0f);
+				al_draw_line(tmpOrigin1.x, tmpOrigin1.y, tmpOrigin2.x, tmpOrigin2.y, color, this->debugBrushSize);
 			}
 		}
 		if(shape->GetType() == 0 ){
-			al_draw_circle(this->getOriginLoc().x * IB2Entity::box2Dratio, -this->getOriginLoc().y * IB2Entity::box2Dratio, shape->m_radius * IB2Entity::box2Dratio, color, 1.0f);
+			//zatim nefunguje pri offsetu shapu
+			al_draw_circle(this->getOriginLoc().x * IB2Entity::box2Dratio, -this->getOriginLoc().y * IB2Entity::box2Dratio, shape->m_radius * IB2Entity::box2Dratio, color, this->debugBrushSize);
 		}
 		if (shape->GetType() == 3) {
 			for (int i = 0; i < ((b2ChainShape*)shape)->GetChildCount(); i++) {
@@ -239,7 +249,7 @@ void IB2Entity::renderDebugBox2D(){
 				tmpOrigin2.x = (p2.x + p.x) * IB2Entity::box2Dratio;
 				tmpOrigin2.y = (-p2.y - p.y) * IB2Entity::box2Dratio;
 
-				al_draw_line(tmpOrigin1.x, tmpOrigin1.y, tmpOrigin2.x, tmpOrigin2.y, color, 2.0f);
+				al_draw_line(tmpOrigin1.x, tmpOrigin1.y, tmpOrigin2.x, tmpOrigin2.y, color, this->debugBrushSize);
 			}
 		}
 	}

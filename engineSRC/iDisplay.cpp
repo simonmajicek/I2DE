@@ -1,7 +1,10 @@
 #include "iDisplay.h"
 
 IDisplay::IDisplay(IPoint res){this->res = res;}
-IDisplay::~IDisplay(){al_destroy_display(this->display);}
+IDisplay::~IDisplay(){
+	al_destroy_display(this->display);
+	al_destroy_event_queue(this->event_queue);
+}
 
 bool IDisplay::create(short int flags) {
 	al_set_new_display_flags(flags);
@@ -23,7 +26,7 @@ bool IDisplay::update() {
 	ALLEGRO_EVENT events;
 	while (al_get_next_event(event_queue, &events)) {
 		if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-			if (events.display.source == this->display) {stillOpen = false;}
+			if (events.display.source == this->display) { stillOpen = false; if (this->onClose)this->onClose(); }
 		}
 		if (events.type == ALLEGRO_EVENT_DISPLAY_SWITCH_OUT){if(this->onLostFocus) this->onLostFocus();}
 		if (events.type == ALLEGRO_EVENT_DISPLAY_SWITCH_IN){if(this->onGetFocus) this->onGetFocus();}
@@ -73,6 +76,7 @@ int IDisplay::getResY() { return al_get_display_height(this->display); };
 void IDisplay::bindGetFocus(std::function<void()> func) { this->onGetFocus = func; }
 void IDisplay::bindLostFocus(std::function<void()> func) { this->onLostFocus = func; }
 void IDisplay::bindResize(std::function<void()> func) { this->onResize = func; }
+void IDisplay::bindClose(std::function<void()> func) { this->onClose = func; }
 void IDisplay::setTitle(std::string title) { al_set_window_title(this->display, title.c_str()); }
 void IDisplay::setPosition(IPoint windowPosition) { al_set_window_position(this->display, windowPosition.x, windowPosition.x); }
 void IDisplay::showCursor() {al_show_mouse_cursor(this->display);}

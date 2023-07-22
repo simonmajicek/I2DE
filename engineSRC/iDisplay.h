@@ -15,6 +15,7 @@ public:
 	std::function<void()> onGetFocus = { NULL };
 	std::function<void()> onLostFocus = { NULL };
 	std::function<void()> onResize = { NULL };
+	std::function<void()> onClose = { NULL };
 public:
 	IDisplay(IPoint res = IPoint(640, 360));
 	~IDisplay();
@@ -29,6 +30,7 @@ public:
 	void bindGetFocus(std::function<void()> func);
 	void bindLostFocus(std::function<void()> func);
 	void bindResize(std::function<void()> func);
+	void bindClose(std::function<void()> func);
 	void setTitle(std::string title);
 	void setPosition(IPoint windowLoc);
 	void showCursor();

@@ -14,7 +14,9 @@ ICursor::ICursor() {
 	al_register_event_source(this->event_queue, al_get_mouse_event_source());
 }
 
-ICursor::~ICursor() {}
+ICursor::~ICursor() {
+	al_destroy_event_queue(this->event_queue);
+}
 
 void ICursor::update() {
 	this->updateCount++;

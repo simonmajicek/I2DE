@@ -10,7 +10,18 @@ EasyScene::EasyScene() {
 
 EasyScene::~EasyScene() {
 	#ifdef BOX2D_ENGINE_ON
-		delete this->b2world;
+		//delete this->b2world;
+		int joitNumber = this->b2world->GetJointCount();
+		b2Joint* j_list = this->b2world->GetJointList();
+		for (unsigned int i = 0; i < joitNumber; i++) {
+			this->b2world->DestroyJoint(&j_list[i]);
+		}
+		int bodyNumber = this->b2world->GetBodyCount();
+		b2Body* b_list = this->b2world->GetBodyList();
+		for (unsigned int i = 0; i < joitNumber; i++) {
+			this->b2world->DestroyBody(&b_list[i]);
+		}
+
 	#endif
 }
 

@@ -53,10 +53,12 @@ public:
 	std::function<void()> onEndCallback = {NULL};
 	std::function<void()> onPreSolveCallback = {NULL};
 	std::function<void()> onPostSolveCallback = {NULL};
+	float debugBrushSize = {1.0};
 public:
 	//----------------------------------------------------------------------------------------------------------
 	IB2Entity(b2World* b2world, IPointF originLoc, b2BodyType type = b2_dynamicBody);	//b2_staticBody
 	~IB2Entity();
+	bool haveJoint();
 	void setCollisionBehavior(int classType, uint16 categoryBits, uint16 maskBits);
 	virtual void startContact(b2Contact *contact);
 	virtual void endContact(b2Contact *contact);

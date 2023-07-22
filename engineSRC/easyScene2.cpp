@@ -1,30 +1,41 @@
 #include "easyScene2.h"
 
-EasyScene2::EasyScene2() : EasyScene(){
-	this->display = new IDisplay();
-	this->display->create();
-	this->cursor = new ICursor();
-	this->keyboard = new IKeyboard();
+EasyScene2::EasyScene2(bool multipleScene) : EasyScene(){
+	this->multipleScene = multipleScene;
+	if (!this->multipleScene) {
+		this->display = new IDisplay();
+		this->display->create();
+		this->cursor = new ICursor();
+		this->keyboard = new IKeyboard();
 
-	al_set_target_backbuffer(this->display->display);
-	this->displayClearColor = al_map_rgb(25, 25, 25);
+		al_set_target_backbuffer(this->display->display);
+		this->displayClearColor = al_map_rgb(25, 25, 25);
+	}
+	
 }
 
 EasyScene2::~EasyScene2(){
-	delete this->display;
-	delete this->cursor;
-	delete this->keyboard;
+	if (!this->multipleScene) {
+		delete this->display;
+		delete this->cursor;
+		delete this->keyboard;
 
-	this->display = NULL;
-	this->cursor = NULL;
-	this->keyboard = NULL;
+		this->display = NULL;
+		this->cursor = NULL;
+		this->keyboard = NULL;
+	}
 }
 
 void EasyScene2::preUpdate(){
-	if (!this->display->update()) { this->breakLoop = true; }
+	if (!this->display->update()) { 
+		if (!this->multipleScene) {
+			this->breakLoop = true;
+		}
+	
+	}
 	eCam2D.update();
 	this->keyboard->update();
-	this->cursor->update();
+	this->cursor->update();	
 	this->cursor->setOriginLoc(this->eCam2D.camera->ScreenToWorld(this->cursor->loc));
 }
 
@@ -48,9 +59,6 @@ void EasyScene2::postRender(){
 	al_flip_display();
 	fpsCounter.update();	
 }
-
-
-
 
 
 
